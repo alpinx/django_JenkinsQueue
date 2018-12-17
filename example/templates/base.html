@@ -1,0 +1,38 @@
+{% load static %}
+{% block js %}
+<script>
+    var append_increment = 0;
+    setInterval(function() {
+        $.ajax({
+            type: "GET",
+            url: "get_more_tables/",  // URL to your view that serves new info
+            data: {'append_increment': append_increment}
+        })
+        .done(function(response) {
+             $('#_appendHere').html(response);
+            append_increment += 1;
+        });
+    }, 5000)
+</script>
+{% endblock %}
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>
+      Jenkins Queue Viewer {% block title %}{% endblock %}
+    </title>
+
+    <script src="{% static 'js/main.js' %}"></script> <!-- This is how to include a static file -->
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" type="text/css" />
+  </head>
+  <body>
+    <div class="container">
+      {% block pagecontent %}
+      {% endblock %}
+    </div>
+  </body>
+</html>

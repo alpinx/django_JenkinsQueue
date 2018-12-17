@@ -1,0 +1,26 @@
+{% load humanize %}
+<tr class="tablehead">
+    <td colspan="4">Already running</td>
+</tr>
+
+{% for task in data %}
+<tr class="tablerow">
+    <td>{{ task.srprofile }}</td>
+    <td>{{ task.testname }}</td>
+    <td>{{ task.vm }}</td>
+    <td>{{ task.env }}</td>
+</tr>
+{% endfor %}
+
+<tr class="tablehead" style="background-color:#b9bb43;">
+    <td colspan="4">Queue</td>
+</tr>
+
+{% for task in data1 %}
+<tr class="tablerow">
+    <td>{{ task.srprofile }}</td>
+    <td>{{ task.testname }}</td>
+    <td>{{ task.vm }}</td>
+    <td>{{ task.env }}</td>
+</tr>
+{% endfor %}
