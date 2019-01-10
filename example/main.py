@@ -1,4 +1,5 @@
 import jenkins
+from operator import itemgetter
 
 
 class JenkinsQueue:
@@ -17,8 +18,10 @@ class JenkinsQueue:
                 paramindex = next(
                     item for item in queue['actions'] if item.get('_class') == 'hudson.model.ParametersAction')
 
-                srprofile = paramindex['parameters'][2]['value'].replace('.srprofile', '')
-                testname = paramindex['parameters'][0]['value'].replace('INWK.', '').replace('@', '')
+                srprofile = next(param for param in paramindex['parameters']
+                                 if param.get('name') == 'PROFILE_PROJECT')['value'].replace('INWK.', '').replace('.srprofile', '')
+                testname = next(param for param in paramindex['parameters']
+                                 if param.get('name') == 'SELENIUM_TAG')['value'].replace('INWK.', '').replace('@', '')
                 testname = testname[testname.find('.')+1:]
                 vm = ""
                 env = paramindex['parameters'][4]['value']
@@ -32,13 +35,16 @@ class JenkinsQueue:
         for build in builds:
             if (build['name'] == 'SeleniumStartAutomationTests'):
                 buildinfo = server.get_build_info(name='SeleniumStartAutomationTests', number=build['number'])
-                paramindex = next(
-                    item for item in buildinfo['actions'] if item.get('_class') == 'hudson.model.ParametersAction')
-                srprofile = paramindex['parameters'][2]['value'].replace('.srprofile', '')
-                testname = paramindex['parameters'][0]['value'].replace('INWK.', '').replace('@', '')
+                paramindex = next(item for item in buildinfo['actions']
+                                  if item.get('_class') == 'hudson.model.ParametersAction')
+                srprofile = next(param for param in paramindex['parameters']
+                                 if param.get('name') == 'PROFILE_PROJECT')['value'].replace('INWK.', '').replace('.srprofile', '')
+                testname = next(param for param in paramindex['parameters']
+                                 if param.get('name') == 'SELENIUM_TAG')['value'].replace('INWK.', '').replace('@', '')
                 testname = testname[testname.find('.')+1:]
                 vm = buildinfo['builtOn'].replace('Jenkins-', '')
-                env = paramindex['parameters'][4]['value']
+                env = next(param for param in paramindex['parameters']
+                                 if param.get('name') == 'ENVIRONMENT')['value']
                 runningqueue.append({
                     "srprofile": srprofile,
                     "testname": testname,
@@ -63,9 +69,11 @@ class JenkinsQueue:
         print(f"Builds in Progress: {len(runningqueue)}")
         for ri in runningqueue:
             print(ri)
-        return runningqueue, queuelist
+        return sorted(runningqueue, key=itemgetter('srprofile')), sorted(queuelist, key=itemgetter('srprofile'))
 
 
 arr1, arr2 = JenkinsQueue.getJenkinsQueue(JenkinsQueue)
+print("-------------------")
+
 print(arr1)
 print(arr2)
