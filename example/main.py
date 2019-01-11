@@ -1,5 +1,9 @@
+import calendar
 import jenkins
 from operator import itemgetter
+import datetime
+import time
+import pytz
 
 
 class JenkinsQueue:
@@ -35,6 +39,7 @@ class JenkinsQueue:
         for build in builds:
             if (build['name'] == 'SeleniumStartAutomationTests'):
                 buildinfo = server.get_build_info(name='SeleniumStartAutomationTests', number=build['number'])
+
                 paramindex = next(item for item in buildinfo['actions']
                                   if item.get('_class') == 'hudson.model.ParametersAction')
                 srprofile = next(param for param in paramindex['parameters']
@@ -45,11 +50,13 @@ class JenkinsQueue:
                 vm = buildinfo['builtOn'].replace('Jenkins-', '')
                 env = next(param for param in paramindex['parameters']
                                  if param.get('name') == 'ENVIRONMENT')['value']
+                duration = (datetime.datetime.now() - datetime.datetime.fromtimestamp(buildinfo['timestamp']/ 1e3)).seconds
                 runningqueue.append({
                     "srprofile": srprofile,
                     "testname": testname,
                     "vm": vm,
-                    "env": env
+                    "env": env,
+                    "duration": duration
                 })
 
         for count, item in enumerate([d["srprofile"] for d in queuelist]):
@@ -58,10 +65,11 @@ class JenkinsQueue:
             if ([d["srprofile"] for d in queuelist]).count(item) > 1:
                 queuelist[count]["srprofile"] = item + "      <-- already in queue!!!"
         for count, item in enumerate([d["srprofile"] for d in runningqueue]):
-
             if ([d["srprofile"] for d in runningqueue]).count(item) > 1:
                 runningqueue[count]["srprofile"] = item + "      <-- running twice!!!"
-
+        for count, item in enumerate([d["duration"]/60 for d in runningqueue]):
+            if item > 60:
+                runningqueue[count]["srprofile"] +="   <-- Duration is longer as 1 hour!!!"
         print(f"Queue count: {len(queuelist)}")
         for i in queuelist:
             print(i)

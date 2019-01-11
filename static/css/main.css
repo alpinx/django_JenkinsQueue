@@ -46,6 +46,19 @@ padding: 5% 0% 2% 5%;
     background-color: #4CAF50;
     color: white;
 }
+.tablecolumn {
+    max-width: 550px;
+    word-wrap: break-word;
+}
 #queuetable tr:nth-child(even){background-color: #434343;}
 
 #queuetable tr:hover {background-color: #888;}
+
+.blink_me {
+  color:red;
+  animation: blinker 2s linear infinite;
+}
+
+@keyframes blinker {
+  50% { opacity: 0.5; }
+}

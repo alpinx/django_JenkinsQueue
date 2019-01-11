@@ -1,6 +1,9 @@
 {% load static %}
 {% block js %}
-<script>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+ <script>
+
     var append_increment = 0;
     setInterval(function() {
         $.ajax({
@@ -11,12 +14,19 @@
         .done(function(response) {
              $('#_appendHere').html(response);
             append_increment += 1;
+            jQuery('td:contains("already running")').addClass('blink_me');
+            jQuery('td:contains("already in queue")').addClass('blink_me');
+            jQuery('td:contains("running twice")').addClass('blink_me');
+            jQuery('td:contains("Duration is longer as 1 hour")').addClass('blink_me');
         });
     }, 5000)
+
 </script>
 {% endblock %}
 
+
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
 
 <!DOCTYPE html>
 <html>
