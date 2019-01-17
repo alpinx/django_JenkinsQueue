@@ -5,10 +5,10 @@
 
 {% for task in data %}
 <tr class="tablerow">
-    <td>{{ task.srprofile }}</td>
+    <td class="highlight">{{ task.srprofile }}</td>
     <td class="tablecolumn">{{ task.testname }}</td>
-    <td>{{ task.vm }}</td>
-    <td>{{ task.env }}</td>
+    <td class="vm">{{ task.vm }}</td>
+    <td class="env">{{ task.env }}</td>
 </tr>
 {% endfor %}
 
@@ -18,8 +18,8 @@
 
 {% for task in data1 %}
 <tr class="tablerow">
-    <td>{{ task.srprofile }}</td>
-    <td class="tablecolumn">{{ task.testname }}</td>
+    <td class="highlight">{{ task.srprofile }}</td>
+    <td class="builds-tablecolumn">{{ task.testname }}</td>
     <td>{{ task.vm }}</td>
     <td>{{ task.env }}</td>
 </tr>

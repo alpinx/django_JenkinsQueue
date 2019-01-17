@@ -1,0 +1,14 @@
+{% load humanize %}
+<tr class="tablehead" style="background-color:#189eb9;">
+    <td colspan="2">Finished Tests</td>
+</tr>
+
+{% for build in data %}
+<tr class="tablerow">
+    <td class="highlight status-column">{{ build.status }}</td>
+    <td class="builds-tablecolumn">
+        <p class="buildstable-testname">{{ build.srprofile }}</p>
+        <p class="buildstable-testname">{{ build.testname }}</p>
+    </td>
+</tr>
+{% endfor %}

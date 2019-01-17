@@ -2,12 +2,13 @@
     background: #565656;
     border: 3px solid black;
     border-radius: 15px;
-    margin: 2% auto 2% auto;
-    width: 80%;
+    margin: 2% 5% 2% 5%;
+    width: 90%;
     min-width: fit-content;
+    min-height: fit-content;
 }
 .nav{
-padding: 5% 0% 2% 5%;
+padding: 2% 0% 2% 5%;
 }
 .nav a{
     margin-left: auto;
@@ -19,23 +20,38 @@ padding: 5% 0% 2% 5%;
 .table{
 
 }
-
+.table-column-queuetable{
+    padding-right: 10px;
+    vertical-align: top;
+}
+.table-column-buildstable{
+    padding-left: 10px;
+    vertical-align: top;
+    width: 250px;
+}
 .tablerow{
     color: khaki;
 }
 #queuetable {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    border-collapse: collapse;
-    margin-top: 3%;
-    margin-left: auto;
-    margin-right: auto;
-    width: 90%;
+      float:left;
+      width:100%;
 }
-#queuetable tr {
+#buildstable{
+    float:right;
     width:100%;
 }
-#queuetable td, .tablehead {
-    border: 1px solid #ddd;
+.queuetable {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+.queuetable tr {
+    width:100%;
+}
+.queuetable td, .tablehead {
+    border: 1px solid #3b3b3b;
     padding: 8px;
 
 }
@@ -50,9 +66,21 @@ padding: 5% 0% 2% 5%;
     max-width: 550px;
     word-wrap: break-word;
 }
-#queuetable tr:nth-child(even){background-color: #434343;}
+.builds-tablecolumn{
+    max-width: 250px;
+    font-size: 12;
+}
+.buildstable-testname{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    z-index:1;
+    margin: 0;
+}
 
-#queuetable tr:hover {background-color: #888;}
+.queuetable tr:nth-child(even){background-color: #434343;}
+
+.queuetable tr:hover {background-color: #888;}
 
 .blink_me {
   color:red;
@@ -61,4 +89,43 @@ padding: 5% 0% 2% 5%;
 
 @keyframes blinker {
   50% { opacity: 0.5; }
+}
+
+.success{
+    color:white;
+    background-color: #1ca400
+}
+.failure{
+    color:white;
+    background-color: #a40000
+}
+
+.table-div{
+    width: 100%;
+    padding: 50px;
+}
+.vm{
+    width:50px;
+}
+.env{
+    width:50px;
+}
+.highlight{
+    width:200px;
+}
+.status-column{
+    font-size:12;
+    text-align:center
+}
+#hint {
+    content: attr(innerText);
+    font-family: monospace;
+    display: none;
+    position: absolute;
+    padding: 5px;
+    margin: -15px auto auto 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 1px 2px rgba(0,0,0,.3);
+    background-color: #fff;
+    z-index: 100500;
 }

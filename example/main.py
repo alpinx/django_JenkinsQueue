@@ -11,7 +11,7 @@ class JenkinsQueue:
         server = jenkins.Jenkins('http://jenkins-vm01:8083')
         version = server.get_version()
 
-        print('Hello from Jenkins %s' % (version))
+        print('JenkinsQueue call')
 
         queuelist = []
         runningqueue = []
@@ -75,13 +75,42 @@ class JenkinsQueue:
             print(i)
         print("-----------------------------------------------------------------------")
         print(f"Builds in Progress: {len(runningqueue)}")
-        for ri in runningqueue:
-            print(ri)
+        # for ri in runningqueue:
+        #     print(ri)
         return sorted(runningqueue, key=itemgetter('srprofile')), sorted(queuelist, key=itemgetter('srprofile'))
 
+    def getJenkinsBuilds(self):
+        server = jenkins.Jenkins('http://jenkins-vm01:8083')
+        version = server.get_version()
 
-arr1, arr2 = JenkinsQueue.getJenkinsQueue(JenkinsQueue)
-print("-------------------")
+        print('JenkinsBuilds call')
+        finishedbuilds = []
+        builds = server.get_job_info(name='SeleniumStartAutomationTests')
+        for build in builds['builds']:
+            buildinfo = server.get_build_info(name='SeleniumStartAutomationTests', number=build['number'])
+            if buildinfo['building'] == False:
+                status = buildinfo['result']
+                paramindex = next(item for item in buildinfo['actions']
+                                  if item.get('_class') == 'hudson.model.ParametersAction')
+                srprofile = next(param for param in paramindex['parameters']
+                                 if param.get('name') == 'PROFILE_PROJECT')['value'].replace('INWK.', '').replace(
+                    '.srprofile', '')
+                testname = next(param for param in paramindex['parameters']
+                                 if param.get('name') == 'SELENIUM_TAG')['value'].replace('INWK.', '').replace('@', '')
+                testname = testname[testname.find('.')+1:]
+                finishedbuilds.append({
+                    "status": status,
+                    "srprofile": srprofile,
+                    "testname": testname
+                })
+                if len(finishedbuilds) > 15:
+                    break
+            # for ri in finishedbuilds:
+            #     print(ri)
+        return finishedbuilds
+#
+# arr1 = JenkinsQueue.getJenkinsBuilds(JenkinsQueue)
+# print("-------------------")
+#
+# print(arr1)
 
-print(arr1)
-print(arr2)
