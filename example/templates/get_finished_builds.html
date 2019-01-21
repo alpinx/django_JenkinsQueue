@@ -5,10 +5,15 @@
 
 {% for build in data %}
 <tr class="tablerow">
-    <td class="highlight status-column">{{ build.status }}</td>
+    <td class="highlight status-column"><a target="_blank" rel="noopener noreferrer" href={{build.report}}> {{ build.status }}</a></td>
     <td class="builds-tablecolumn">
-        <p class="buildstable-testname">{{ build.srprofile }}</p>
-        <p class="buildstable-testname">{{ build.testname }}</p>
+        <div class="hint--left" aria-label={{ build.srprofile }}>
+            <p class="buildstable-testname">{{ build.srprofile }}<p>
+        </div>
+        <div class="hint--left" aria-label={{ build.testname }}>
+            <p class="buildstable-testname">{{ build.testname }}</p>
+        </div>
+
     </td>
 </tr>
 {% endfor %}

@@ -1,16 +1,23 @@
+body{
+    text-align: -moz-center;
+    text-align: -webkit-center;
+}
 .container {
     background: #565656;
     border: 3px solid black;
     border-radius: 15px;
-    margin: 2% 5% 2% 5%;
-    width: 90%;
+    width: 95%;
     min-width: fit-content;
     min-height: fit-content;
+    min-width: -moz-fit-content;
+    align-content: center;
+    text-align: -moz-center;
+    text-align: center;
 }
 .nav{
-padding: 2% 0% 2% 5%;
+padding: 1% 0% 1% 1%;
 }
-.nav a{
+.nav a{4F
     margin-left: auto;
     margin-right: auto;
     width:90%;
@@ -21,11 +28,11 @@ padding: 2% 0% 2% 5%;
 
 }
 .table-column-queuetable{
-    padding-right: 10px;
+    padding-right: 5px;
     vertical-align: top;
 }
 .table-column-buildstable{
-    padding-left: 10px;
+    padding-left: 5px;
     vertical-align: top;
     width: 250px;
 }
@@ -74,8 +81,7 @@ padding: 2% 0% 2% 5%;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    z-index:1;
-    margin: 0;
+
 }
 
 .queuetable tr:nth-child(even){background-color: #434343;}
@@ -101,8 +107,9 @@ padding: 2% 0% 2% 5%;
 }
 
 .table-div{
-    width: 100%;
-    padding: 50px;
+    width: 95%;
+    padding-top: 50px;
+    display: inline-table;
 }
 .vm{
     width:50px;
@@ -117,15 +124,22 @@ padding: 2% 0% 2% 5%;
     font-size:12;
     text-align:center
 }
-#hint {
-    content: attr(innerText);
-    font-family: monospace;
-    display: none;
-    position: absolute;
-    padding: 5px;
-    margin: -15px auto auto 10px;
-    border-radius: 5px;
-    box-shadow: 0 0 1px 2px rgba(0,0,0,.3);
-    background-color: #fff;
-    z-index: 100500;
+a:link {
+  text-decoration: none;
+  color:white;
+}
+
+a:visited {
+  text-decoration: none;
+  color:gray;
+}
+
+a:hover {
+  text-decoration: underline;
+  color:white;
+}
+
+a:active {
+  text-decoration: underline;
+  color:white;
 }

@@ -98,19 +98,21 @@ class JenkinsQueue:
                 testname = next(param for param in paramindex['parameters']
                                  if param.get('name') == 'SELENIUM_TAG')['value'].replace('INWK.', '').replace('@', '')
                 testname = testname[testname.find('.')+1:]
+                reportUrl = buildinfo['url']+"SeleniumReport"
                 finishedbuilds.append({
                     "status": status,
                     "srprofile": srprofile,
-                    "testname": testname
+                    "testname": testname,
+                    "report": reportUrl
                 })
                 if len(finishedbuilds) > 15:
                     break
             # for ri in finishedbuilds:
             #     print(ri)
         return finishedbuilds
-#
-# arr1 = JenkinsQueue.getJenkinsBuilds(JenkinsQueue)
-# print("-------------------")
-#
-# print(arr1)
+
+arr1 = JenkinsQueue.getJenkinsBuilds(JenkinsQueue)
+print("-------------------")
+
+print(arr1)
 

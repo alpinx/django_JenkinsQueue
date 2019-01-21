@@ -48,19 +48,8 @@
               if( $(this).hasClass("highlight") )
                   $(this).addClass('success');
                   });
-            var hint = $('#hint');
-            $('.buildstable-testname').on({
-                mouseenter: function(){
-                 hint.textContent = $(this).textContent;
-                 hint.text($(this).html()).show();
-                },
-                mouseleave: function(){
-                        hint.hide();
-                },
-                mousemove: function(e){
-                        hint.css({top: e.pageY, left: e.pageX});
-                }
-            });
+
+
         });
     }
 ajax_getTable();
@@ -84,6 +73,7 @@ setInterval(ajax_getBuilds, 30000);
 
     <script src="{% static 'js/main.js' %}"></script> <!-- This is how to include a static file -->
     <link rel="stylesheet" href="{% static 'css/main.css' %}" type="text/css" />
+    <link rel="stylesheet" href="{% static 'css/hint.css' %}"/>
   </head>
   <body>
     <div class="container">
