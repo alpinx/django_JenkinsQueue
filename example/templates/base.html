@@ -3,13 +3,22 @@
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
  <script>
+
+
+    var toggle = document.getElementById('checkbox');
+    var toggleNumber;
+    if(!toggle){
+        toggleNumber = true;
+    }else{
+        toggleNumber= toggle.getAttribute('value');
+    }
     var append_increment = 0;
 
     var ajax_getTable = function () {
         $.ajax({
             type: "GET",
             url: "get_more_tables/",  // URL to your view that serves new info
-            data: {'append_increment': append_increment}
+            data: {'append_increment': append_increment,'chosenTableView':toggleNumber}
         })
         .done(function(response) {
              $('#_appendHere').html(response);

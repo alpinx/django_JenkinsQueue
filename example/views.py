@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.template import RequestContext
+from example.main import JenkinsQueue
 from example import main
+import jenkins
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.csrf import csrf_exempt
 
@@ -12,24 +14,36 @@ class HomePageView(TemplateView):
 def dispqueue(request):
     return render(request, 'dispqueue.html', {'data': ""})
 
+
+instance = JenkinsQueue()
+
+
 @csrf_exempt
 def get_more_tables(request):
-    increment = int(request.GET.get('append_increment'))
-    increment_to = increment + 1
-    runningqueue,queuelist = main.JenkinsQueue.getJenkinsQueue(main.JenkinsQueue)
+    increment= int(request.GET.get('append_increment'))
+    isShowOnlyBusy = request.GET.get('chosenTableView').lower() == "true"
+    queuelist = JenkinsQueue.getJenkinsQueue(instance)
+    runningqueue = JenkinsQueue.getJenkinsRunningBuilds(instance)
+    queuelist, runningqueue = main.verifyErrorRunning(queuelist, runningqueue)
     #  order = DATAW[3]
     if(len(runningqueue)<1):
         runningqueue.append({"srprofile":"Running queue is empty!"})
     if (len(queuelist) < 1):
         queuelist.append({"srprofile": "Queue is empty!"})
-    return render(request, 'get_more_tables.html', {'data': runningqueue, 'data1': queuelist})
-
+    if(isShowOnlyBusy):
+        print(str(isShowOnlyBusy)+", render only busy")
+        return render(request, 'get_more_tables.html', {'data': runningqueue, 'data1': queuelist})
+    else:
+        print(str(isShowOnlyBusy)+", render all")
+        runningqueue = main.makeBuildsForAllVms(runningqueue)
+        return render(request, 'get_more_tables_All_Vm.html', {'data': runningqueue, 'data1': queuelist})
 
 @csrf_exempt
 def get_finished_builds(request):
     increment = int(request.GET.get('append_increment2'))
+    server = jenkins.Jenkins('http://jenkins-vm01:8083')
     increment_to = increment + 1
-    builds = main.JenkinsQueue.getJenkinsBuilds(main.JenkinsQueue)
+    builds = JenkinsQueue.getJenkinsBuilds(instance)
     #  order = DATAW[3]
     if len(builds) < 1:
         builds.append({"testname": "There is no finished builds!"})

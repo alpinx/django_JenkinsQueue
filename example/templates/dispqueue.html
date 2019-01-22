@@ -16,17 +16,14 @@
     <!-- We will display our data in a normal HTML table using Django's
     template for-loop to generate our table rows for us-->
     <table class="table-div">
-        <tr>
-            <td class="table-column-queuetable">
-                <table id="queuetable" class="table queuetable table-striped table-condensed">
-                    <tbody id="_appendHere">
-                    <tr>
-                        <td style="color:white">Please wait...</td>
-                    </tr>
-                    </tbody>
-                </table>
+        <tr style="height:fit-content;">
+            <td align="right" class="table-column-toogle">
+                <div class="wrapper">
+                    <input type="checkbox" id="checkbox" value="true" />
+                    <label for="checkbox"></label>
+                </div>
             </td>
-            <td class="table-column-buildstable">
+            <td rowspan="2" class="table-column-buildstable">
                 <table id="buildstable" class="table queuetable table-striped table-condensed">
 
                     <tbody id="_appendBuilds">
@@ -37,12 +34,26 @@
                 </table>
             </td>
         </tr>
+        <script src="{% static 'js/toggle.js' %}"></script>
+        <tr>
+            <td class="table-column-queuetable">
+                <table id="queuetable" class="table queuetable table-striped table-condensed">
+                    <tbody id="_appendHere">
+                    <tr>
+                        <td style="color:white">Please wait...</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+
+        </tr>
     </table>
 
 
 </div>
 {% include 'partials/nav-bar.html' %}
 {% endblock %}
+<script src="{% static 'js/toggle.js' %}"></script>
 </body>
 </html>
 
