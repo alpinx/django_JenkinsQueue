@@ -214,3 +214,6 @@ label:after {
   color:white;
   content: "All VMs";
 }
+.nodisplay {
+    display:none;
+}

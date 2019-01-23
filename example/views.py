@@ -21,22 +21,22 @@ instance = JenkinsQueue()
 @csrf_exempt
 def get_more_tables(request):
     increment= int(request.GET.get('append_increment'))
-    isShowOnlyBusy = request.GET.get('chosenTableView').lower() == "true"
     queuelist = JenkinsQueue.getJenkinsQueue(instance)
     runningqueue = JenkinsQueue.getJenkinsRunningBuilds(instance)
     queuelist, runningqueue = main.verifyErrorRunning(queuelist, runningqueue)
     #  order = DATAW[3]
     if(len(runningqueue)<1):
         runningqueue.append({"srprofile":"Running queue is empty!"})
+    else:
+        runningqueue = main.makeBuildsForAllVms(runningqueue)
     if (len(queuelist) < 1):
         queuelist.append({"srprofile": "Queue is empty!"})
-    if(isShowOnlyBusy):
-        print(str(isShowOnlyBusy)+", render only busy")
-        return render(request, 'get_more_tables.html', {'data': runningqueue, 'data1': queuelist})
-    else:
-        print(str(isShowOnlyBusy)+", render all")
-        runningqueue = main.makeBuildsForAllVms(runningqueue)
-        return render(request, 'get_more_tables_All_Vm.html', {'data': runningqueue, 'data1': queuelist})
+    #if(isShowOnlyBusy):
+    #    print(str(isShowOnlyBusy)+", render only busy")
+    #    return render(request, 'get_more_tables.html', {'data': runningqueue, 'data1': queuelist})
+    #else:
+    #    print(str(isShowOnlyBusy)+", render all")
+    return render(request, 'get_more_tables_All_Vm.html', {'data': runningqueue, 'data1': queuelist})
 
 @csrf_exempt
 def get_finished_builds(request):
