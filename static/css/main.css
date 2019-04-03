@@ -73,14 +73,8 @@ padding: 1% 0% 1% 1%;
     background-color: #4CAF50;
     color: white;
 }
-.tablecolumn {
-    max-width: 550px;
-    word-wrap: break-word;
-}
-.builds-tablecolumn{
-    max-width: 250px;
-    font-size: 12;
-}
+
+
 .buildstable-testname{
     overflow: hidden;
     white-space: nowrap;
@@ -115,19 +109,41 @@ padding: 1% 0% 1% 1%;
     padding-top: 50px;
     display: inline-table;
 }
+/*------------queue table---------------------*/
+.srprofile{
+    width: fit-content;
+    width: -moz-fit-content;
+   /* max-width: 300px;*/
+    word-wrap: break-word;
+    white-space: nowrap;
+}
+.tablecolumn {
+    max-width: 500px;
+    word-wrap: break-word;
+    width: 100%;
+}
 .vm{
     width:50px;
 }
 .env{
     width:50px;
 }
-.highlight{
-    width:200px;
+.time{
+  display:none;
 }
+.highlight{
+
+}
+/*---------------build table--------------------*/
 .status-column{
     font-size:12;
     text-align:center
 }
+.builds-tablecolumn{
+    max-width: 200px;
+    font-size: 12;
+}
+/*---------------link decoration--------------------*/
 a:link {
   text-decoration: none;
   color:#fff;
@@ -159,7 +175,13 @@ a:active {
 .wrapper {
   text-align: center;
   width:fit-content;
+  width: -moz-fit-content;
 }
+.wrapper-row{
+    height:fit-content;
+    height: 1%;
+}
+/*-------------------------*/
 
 label {
   display: block;

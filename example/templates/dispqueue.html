@@ -16,7 +16,7 @@
     <!-- We will display our data in a normal HTML table using Django's
     template for-loop to generate our table rows for us-->
     <table class="table-div">
-        <tr style="height:fit-content;">
+        <tr class="wrapper-row">
             <td align="right" class="table-column-toogle">
                 <div class="wrapper">
                     <input type="checkbox" id="checkbox" value="true" />
@@ -36,9 +36,9 @@
         </tr>
         <script src="{% static 'js/toggle.js' %}"></script>
         <tr>
-            <td class="table-column-queuetable">
+            <td id="_appendHere" class="table-column-queuetable">
                 <table id="queuetable" class="table queuetable table-striped table-condensed">
-                    <tbody id="_appendHere">
+                    <tbody >
                     <tr>
                         <td style="color:white">Please wait...</td>
                     </tr>

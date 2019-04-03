@@ -1,6 +1,7 @@
 from operator import itemgetter
 import jenkins
 import datetime
+import time
 
 
 class JenkinsQueue:
@@ -35,8 +36,8 @@ class JenkinsQueue:
                     "env": env,
                     "duration": duration
                 })
-        print(f"Builds in Progress: {len(runningqueue)}")
-        return sorted(runningqueue, key=itemgetter('srprofile'))
+        #print(f"Builds in Progress: {len(runningqueue)}")
+        return runningqueue
 
     def getJenkinsQueue(self):
         print('JenkinsQueue call')
@@ -61,8 +62,8 @@ class JenkinsQueue:
                     "vm": vm,
                     "env": env
                 })
-        print(f"Queue count: {len(queuelist)}")
-        return sorted(queuelist, key=itemgetter('srprofile'))
+        #print(f"Queue count: {len(queuelist)}")
+        return queuelist
 
     def getJenkinsBuilds(self):
         version = self.server.get_version()
@@ -70,7 +71,7 @@ class JenkinsQueue:
         print('JenkinsFinishedBuilds call')
         finishedbuilds = []
         builds = self.server.get_job_info(name='SeleniumStartAutomationTests')
-        for build in builds['builds']:
+        for count, build in enumerate(builds['builds']):
             buildinfo = self.server.get_build_info(name='SeleniumStartAutomationTests', number=build['number'])
             if buildinfo['building'] == False:
                 status = buildinfo['result']
@@ -89,7 +90,7 @@ class JenkinsQueue:
                     "testname": testname,
                     "report": reportUrl
                 })
-                if len(finishedbuilds) > 15:
+                if count > 15:
                     break
             # for ri in finishedbuilds:
             #     print(ri)
@@ -119,21 +120,31 @@ def makeBuildsForAllVms(runningqueue):
             "srprofile": "",
             "testname": "",
             "vm": "vm0" + str(i) if i < 10 else "vm" + str(i),
-            "env": ""
+            "env": "",
+            "duration": ""
         })
 
+
     for count, item in enumerate([d["vm"] for d in runningqueue]):
-        for count2, item2 in enumerate([d1["vm"] for d1 in allVm]):
-            if item == item2:
-                allVm[count2]["srprofile"] = runningqueue[count]["srprofile"]
-                allVm[count2]["testname"] = runningqueue[count]["testname"]
-                allVm[count2]["env"] = runningqueue[count]["env"]
+                 for i, d in enumerate(allVm):
+                     if item in d["vm"]:
+                        allVm[i]["srprofile"] = runningqueue[count]["srprofile"]
+                        allVm[i]["testname"] = runningqueue[count]["testname"]
+                        allVm[i]["env"] = runningqueue[count]["env"]
+                        allVm[i]["duration"] = runningqueue[count]["duration"]
     return allVm
 
-
-#inst = JenkinsQueue()
-#arr1 = JenkinsQueue.getJenkinsRunningBuilds(inst)
-#all = makeBuildsForAllVms(arr1)
+#
+# start = time.time()
+# inst = JenkinsQueue()
+# arr1 = JenkinsQueue.getJenkinsRunningBuilds(inst)
+# end = time.time()
+# start2 = time.time()
+# all = makeBuildsForAllVms(arr1)
+#
+# end2 = time.time()
+# print(end - start)
+# print(end2 - start2)
 #print(all)
 # print("-------------------")
 #

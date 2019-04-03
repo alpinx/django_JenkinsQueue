@@ -23,7 +23,7 @@ def get_more_tables(request):
     increment= int(request.GET.get('append_increment'))
     queuelist = JenkinsQueue.getJenkinsQueue(instance)
     runningqueue = JenkinsQueue.getJenkinsRunningBuilds(instance)
-    queuelist, runningqueue = main.verifyErrorRunning(queuelist, runningqueue)
+    #queuelist, runningqueue = main.verifyErrorRunning(queuelist, runningqueue)
     #  order = DATAW[3]
     if(len(runningqueue)<1):
         runningqueue.append({"srprofile":"Running queue is empty!"})
@@ -31,11 +31,7 @@ def get_more_tables(request):
         runningqueue = main.makeBuildsForAllVms(runningqueue)
     if (len(queuelist) < 1):
         queuelist.append({"srprofile": "Queue is empty!"})
-    #if(isShowOnlyBusy):
-    #    print(str(isShowOnlyBusy)+", render only busy")
-    #    return render(request, 'get_more_tables.html', {'data': runningqueue, 'data1': queuelist})
-    #else:
-    #    print(str(isShowOnlyBusy)+", render all")
+
     return render(request, 'get_more_tables_All_Vm.html', {'data': runningqueue, 'data1': queuelist})
 
 @csrf_exempt
