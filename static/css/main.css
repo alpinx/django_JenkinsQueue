@@ -123,7 +123,8 @@ padding: 1% 0% 1% 1%;
     width: 100%;
 }
 .vm{
-    width:50px;
+    white-space: nowrap;
+    width:60px;
 }
 .env{
     width:50px;
