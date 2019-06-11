@@ -12,8 +12,9 @@ class JenkinsQueue:
         runningqueue = []
         builds = self.server.get_running_builds()
         for build in builds:
-            if build['name'] == 'SeleniumStartAutomationTests':
-                buildinfo = self.server.get_build_info(name='SeleniumStartAutomationTests', number=build['number'])
+            if (build['name'] == 'SeleniumStartAutomationTests' or
+                    build['name'] == 'SeleniumStartAutomationTests_Dev'):
+                buildinfo = self.server.get_build_info(name=build['name'], number=build['number'])
 
                 paramindex = next(item for item in buildinfo['actions']
                                   if item.get('_class') == 'hudson.model.ParametersAction')
@@ -43,7 +44,8 @@ class JenkinsQueue:
         queuelist = []
         queue_info = self.server.get_queue_info()
         for queue in queue_info:
-            if queue['task']['name'] == 'SeleniumStartAutomationTests':
+            if (queue['task']['name'] == 'SeleniumStartAutomationTests' or
+                    queue['task']['name'] == 'SeleniumStartAutomationTests_Dev'):
                 paramindex = next(
                     item for item in queue['actions'] if item.get('_class') == 'hudson.model.ParametersAction')
 
@@ -67,10 +69,16 @@ class JenkinsQueue:
     def getJenkinsBuilds(self):
         print('JenkinsFinishedBuilds call')
         finishedbuilds = []
-        builds = self.server.get_job_info(name='SeleniumStartAutomationTests')
+        main = self.getLastFinishedBuilds('SeleniumStartAutomationTests', 10)
+        dev = self.getLastFinishedBuilds('SeleniumStartAutomationTests_Dev', 10)
+        return sorted(main+dev, key=lambda x: x['timestamp'], reverse=True)
+
+    def getLastFinishedBuilds(self, jobName, countOfBuilds):
+        builds = self.server.get_job_info(name=jobName)
         count = 0
+        finishedbuilds = []
         for build in (builds['builds']):
-            buildinfo = self.server.get_build_info(name='SeleniumStartAutomationTests', number=build['number'])
+            buildinfo = self.server.get_build_info(name=jobName, number=build['number'])
             if not buildinfo['building']:
                 status = buildinfo['result']
                 paramindex = next(item for item in buildinfo['actions']
@@ -82,14 +90,17 @@ class JenkinsQueue:
                                 if param.get('name') == 'SELENIUM_TAG')['value'].replace('INWK.', '').replace('@', '')
                 testname = testname[testname.find('.') + 1:]
                 report_url = buildinfo['url'] + "SeleniumReport"
+                timestamp = buildinfo['timestamp']
+
                 finishedbuilds.append({
                     "status": status,
                     "srprofile": srprofile,
                     "testname": testname,
-                    "report": report_url
+                    "report": report_url,
+                    "timestamp": timestamp
                 })
                 count += 1
-            if count > 15:
+            if count > countOfBuilds:
                 break
             # for ri in finishedbuilds:
             #     print(ri)
@@ -157,8 +168,8 @@ def makeBuildsForAllVms(runningqueue):
 #
 # start = time.time()
 #inst = JenkinsQueue()
-# arr1 = JenkinsQueue.getJenkinsRunningBuilds(inst)
 #arr1 = JenkinsQueue.getJenkinsBuilds(inst)
+# arr1 = JenkinsQueue.getJenkinsBuilds(inst)
 # end = time.time()
 # start2 = time.time()
 # all = makeBuildsForAllVms(arr1)
